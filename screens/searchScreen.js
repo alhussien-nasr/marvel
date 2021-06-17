@@ -1,4 +1,4 @@
-import React from "react";
+import React , {useState} from "react";
 import {
   View,
   Text,
@@ -13,6 +13,7 @@ import { SearchCard } from "../components/searchCard";
 import Highlighter from "react-native-highlight-words";
 
 export const Search = () => {
+    const[char , setchar]=useState('')
   return (
     <SafeAreaView style={styles.container}>
       <View
@@ -28,6 +29,8 @@ export const Search = () => {
             style={styles.inputStyle}
             placeholder="Search for a character..."
             placeholderTextColor="white"
+            value={char}
+            onChangeText={(charac)=>setchar(charac)}
           ></TextInput>
         </View>
         <TouchableOpacity>
