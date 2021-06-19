@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import { View, FlatList, Image,SafeAreaView } from "react-native";
+import { View, FlatList, Image, SafeAreaView } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
-import { Card } from "../components/card";
+import { images } from "../../assets";
+import {CharacterCard } from "../../components";
 
-export const List = () => {
+export const Home = () => {
   return (
     <SafeAreaView
       style={{
@@ -27,14 +28,14 @@ export const List = () => {
       >
         <Image
           style={{ width: 170, height: 40, marginLeft: 60 }}
-          source={require("../assets/marvIcon.jpeg")}
+          source={images.logo}
         />
         <Icon name="search" color="red" size={40} width={230} height={200} />
       </View>
       <FlatList
         data={arr}
         renderItem={({ item }) => {
-          return <Card title={item.title} source={item.source} />;
+          return <CharacterCard title={item.title} source={item.source} />;
         }}
       />
     </SafeAreaView>
@@ -42,8 +43,8 @@ export const List = () => {
 };
 
 const arr = [
-  { title: "thor", source: require("../assets/650012.png") },
-  { title: "thor", source: require("../assets/650012.png") },
-  { title: "thor", source: require("../assets/650012.png") },
-  { title: "thor", source: require("../assets/650012.png") },
+  { title: "thor", source: images.logo },
+  { title: "thor", source: images.logo },
+  { title: "thor", source: images.logo },
+  { title: "thor", source: images.logo },
 ];

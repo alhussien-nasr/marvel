@@ -6,7 +6,7 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from 'react-native';
-export const Card = ({title, source}) => {
+export const CharacterCard = ({title, source}) => {
   return (
     <TouchableOpacity style={{marginBottom:30}}>
       <ImageBackground source={source} resizeMode="stretch" style={styles.container}>

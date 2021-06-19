@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
-export const SubCard = ({imageDetails,textDetails}) => {
+export const ComicCard = ({imageDetails,textDetails}) => {
   return (
       <TouchableOpacity
         style={{

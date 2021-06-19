@@ -5,11 +5,12 @@ import {
   Image,
   SafeAreaView
 } from 'react-native';
-export const FirstScreen = () => {
+import {images} from '../../assets'
+export const Splash = () => {
   return (
     <SafeAreaView style={styles.viewStyle}>
       <Image
-        source={require('../assets/marvIcon.jpeg')}
+        source={images.logo}
         style={styles.iconStyle}
         resizeMode={'contain'}
       />

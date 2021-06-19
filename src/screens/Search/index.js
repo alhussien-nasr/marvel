@@ -1,4 +1,4 @@
-import React , {useState} from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -6,14 +6,15 @@ import {
   TouchableOpacity,
   StyleSheet,
   SafeAreaView,
-  FlatList
+  FlatList,
 } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
-import { SearchCard } from "../components/searchCard";
+import { SearchCard } from "../../components";
 import Highlighter from "react-native-highlight-words";
+import { images } from "../../assets";
 
 export const Search = () => {
-    const[char , setchar]=useState('')
+  const [char, setchar] = useState("");
   return (
     <SafeAreaView style={styles.container}>
       <View
@@ -30,23 +31,28 @@ export const Search = () => {
             placeholder="Search for a character..."
             placeholderTextColor="white"
             value={char}
-            onChangeText={(charac)=>setchar(charac)}
+            onChangeText={(charac) => setchar(charac)}
           ></TextInput>
         </View>
         <TouchableOpacity>
           <Text style={styles.textStyle}>cancel</Text>
         </TouchableOpacity>
       </View>
-      <FlatList style={{flex:1}} data={searchArr} renderItem={({item})=>{ return <SearchCard img={item.img} name={item.name} />}}/>
-      
+      <FlatList
+        style={{ flex: 1 }}
+        data={searchArr}
+        renderItem={({ item }) => {
+          return <SearchCard img={item.img} name={item.name} />;
+        }}
+      />
     </SafeAreaView>
   );
 };
 
 const searchArr = [
-  { name: "sfsdfdsf", img: require("../assets/650012.png") },
-  { name: "sfsdfdsf", img: require("../assets/650012.png") },
-  { name: "sfsdfdsf", img: require("../assets/650012.png") },
+  { name: "sfsdfdsf", img:  images.logo },
+  { name: "sfsdfdsf", img:  images.logo },
+  { name: "sfsdfdsf", img:  images.logo },
 ];
 
 const styles = StyleSheet.create({

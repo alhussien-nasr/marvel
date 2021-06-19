@@ -7,15 +7,15 @@ import {
   Text,
   FlatList,
 } from "react-native";
-import { SubCard } from "../components/subCard";
-import { List } from "./secondScreen";
-export const Details = () => {
+import { images } from "../../assets";
+import { ComicCard } from "../../components";
+export const CharacterDetails = () => {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "black" }}>
       <ScrollView>
         <View>
           <Image
-            source={require("../assets/650012.png")}
+            source={images.logo}
             style={{ width: "100%", height: 250, borderRadius: 15 }}
           />
           <Text
@@ -52,7 +52,7 @@ export const Details = () => {
             data={arr}
             renderItem={({ item }) => {
               return (
-                <SubCard imageDetails={item.img} textDetails={item.name} />
+                <ComicCard imageDetails={item.img} textDetails={item.name} />
               );
             }}
           />
@@ -125,26 +125,26 @@ export const Details = () => {
   );
 };
 const arr = [
-  { img: require("../assets/650012.png"), name: "dfgdfgdg" },
-  { img: require("../assets/650012.png"), name: "dfgdfgdg" },
-  { img: require("../assets/650012.png"), name: "dfgdfgdg" },
-  { img: require("../assets/650012.png"), name: "dfgdfgdg" },
+  { img: images.logo, name: "dfgdfgdg" },
+  { img: images.logo, name: "dfgdfgdg" },
+  { img: images.logo, name: "dfgdfgdg" },
+  { img: images.logo, name: "dfgdfgdg" },
 ];
 const arr2 = [
-  { img: require("../assets/650012.png"), name: "dfgdfgdg" },
-  { img: require("../assets/650012.png"), name: "dfgdfgdg" },
-  { img: require("../assets/650012.png"), name: "dfgdfgdg" },
-  { img: require("../assets/650012.png"), name: "dfgdfgdg" },
+  { img: images.logo, name: "dfgdfgdg" },
+  { img: images.logo, name: "dfgdfgdg" },
+  { img: images.logo, name: "dfgdfgdg" },
+  { img: images.logo, name: "dfgdfgdg" },
 ];
 const arr3 = [
-  { img: require("../assets/650012.png"), name: "dfgdfgdg" },
-  { img: require("../assets/650012.png"), name: "dfgdfgdg" },
-  { img: require("../assets/650012.png"), name: "dfgdfgdg" },
-  { img: require("../assets/650012.png"), name: "dfgdfgdg" },
+  { img: images.logo, name: "dfgdfgdg" },
+  { img: images.logo, name: "dfgdfgdg" },
+  { img: images.logo, name: "dfgdfgdg" },
+  { img: images.logo, name: "dfgdfgdg" },
 ];
 const arr4 = [
-  { img: require("../assets/650012.png"), name: "dfgdfgdg" },
-  { img: require("../assets/650012.png"), name: "dfgdfgdg" },
-  { img: require("../assets/650012.png"), name: "dfgdfgdg" },
-  { img: require("../assets/650012.png"), name: "dfgdfgdg" },
+  { img: images.logo, name: "dfgdfgdg" },
+  { img: images.logo, name: "dfgdfgdg" },
+  { img: images.logo, name: "dfgdfgdg" },
+  { img: images.logo, name: "dfgdfgdg" },
 ];
