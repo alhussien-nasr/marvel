@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import Highlighter from "react-native-highlight-words";
-export const SearchCard = ({ name, img }) => {
+export const SearchCard = ({ name, img , search}) => {
   return (
     <TouchableOpacity style={styles.container}>
       <View style={{ borderRadius: 23 }}>
@@ -10,7 +10,7 @@ export const SearchCard = ({ name, img }) => {
       <View style={styles.viewOne}>
         <Highlighter
           highlightStyle={{ backgroundColor: "#C44A4A" }}
-          searchWords={["jns", "f", "the"]}
+          searchWords={[search]}
           textToHighlight={name}
           style={styles.textStyle}
         />
@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#404040",
     marginBottom: 20,
   },
-  viewOne:{justifyContent: "center", marginLeft: 8},
+  viewOne: { justifyContent: "center", marginLeft: 8 },
   imgStyle: {
     width: 100,
     height: 85,
