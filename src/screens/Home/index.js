@@ -1,20 +1,66 @@
-import React, { useState } from "react";
-import { View, FlatList, Image, SafeAreaView, StyleSheet } from "react-native";
+import React, { useState, useEffect } from "react";
+import {
+  View,
+  FlatList,
+  Image,
+  SafeAreaView,
+  StyleSheet,
+  TouchableOpacity,
+} from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { images } from "../../assets";
 import { CharacterCard } from "../../components";
+import axios from "axios";
 
-export const Home = () => {
+export const Home = ({ navigation }) => {
+  const [results, setResults] = useState([]);
+  const searchCharacters = async () => {
+    try {
+      const response = await axios.get(
+        "https://gateway.marvel.com/v1/public/characters",
+        {
+          params: {
+            ts: 1,
+            apikey: "b0cb24725a85342620041b8414a86e93",
+            hash: "f423de1460a48b164d168a6842846669",
+            limit: 10,
+          },
+        }
+      );
+      // console.log(response.data?.data?.results);
+      if (response) {
+        setResults(response.data?.data?.results);
+      }
+    } catch (err) {
+      console.log("error==>", err);
+    }
+  };
+  useEffect(() => {
+    searchCharacters();
+  }, []);
+  // console.log(results)
   return (
-    <SafeAreaView style={styles.saveViews}>
+    <SafeAreaView style={styles.saveView}>
       <View style={styles.viewStyle}>
         <Image style={styles.imgStyle} source={images.logo} />
-        <Icon name="search" color="red" size={40} width={230} height={200} />
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate("Search");
+          }}
+        >
+          <Icon name="search" color="red" size={40} width={230} height={200} />
+        </TouchableOpacity>
       </View>
       <FlatList
-        data={arr}
+        data={results}
         renderItem={({ item }) => {
-          return <CharacterCard title={item.title} source={item.source} />;
+          return (
+            <CharacterCard
+               item={item}
+              title={item.name}
+              source={item.thumbnail.path + "." + item.thumbnail.extension}
+            />
+          );
         }}
       />
     </SafeAreaView>

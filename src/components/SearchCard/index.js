@@ -1,11 +1,22 @@
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import Highlighter from "react-native-highlight-words";
-export const SearchCard = ({ name, img , search}) => {
+import { useNavigation } from "@react-navigation/native";
+export const SearchCard = ({ name, img, search, item }) => {
+  const navigation = useNavigation();
   return (
-    <TouchableOpacity style={styles.container}>
+    <TouchableOpacity
+      style={styles.container}
+      onPress={() => {
+        navigation.navigate("CharacterDetails", { id : item.id });
+      }}
+    >
       <View style={{ borderRadius: 23 }}>
-        <Image source={img} style={styles.imgStyle} resizeMode="stretch" />
+        <Image
+          source={{ uri: img }}
+          style={styles.imgStyle}
+          resizeMode="stretch"
+        />
       </View>
       <View style={styles.viewOne}>
         <Highlighter

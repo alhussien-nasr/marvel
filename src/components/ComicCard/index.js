@@ -5,8 +5,8 @@ export const ComicCard = ({ imageDetails, textDetails }) => {
     <TouchableOpacity
       style={styles.container}
     >
-      <Image source={imageDetails} style={styles.imgStyle} />
-      <Text style={{ color: "white" }}>{textDetails}</Text>
+      <Image source={{uri:imageDetails}} style={styles.imgStyle} />
+      <Text numberOfLines={2} style={{ color: "white" ,width:120}}>{textDetails}</Text>
     </TouchableOpacity>
   );
 };

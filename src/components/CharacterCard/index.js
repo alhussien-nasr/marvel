@@ -6,10 +6,12 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from 'react-native';
-export const CharacterCard = ({title, source}) => {
+import {useNavigation} from '@react-navigation/native'
+export const CharacterCard = ({title, source , item}) => {
+    const navigation=useNavigation()
   return (
-    <TouchableOpacity style={{marginBottom:30}}>
-      <ImageBackground source={source} resizeMode="stretch" style={styles.container}>
+    <TouchableOpacity style={{marginBottom:30}} onPress={()=>{ navigation.navigate("CharacterDetails", { id : item.id })}} >
+      <ImageBackground source={{uri:source}} resizeMode="stretch" style={styles.container}>
         <View style={styles.container}>
           <View style={styles.viewOne}>
             <Text style={styles.textStyle}>{title}</Text>

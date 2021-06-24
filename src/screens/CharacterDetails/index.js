@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   SafeAreaView,
@@ -8,28 +8,159 @@ import {
   FlatList,
   StyleSheet,
 } from "react-native";
-import { images } from "../../assets";
 import { ComicCard } from "../../components";
-export const CharacterDetails = () => {
+import axios from "axios";
+export const CharacterDetails = ({ route }) => {
+  const [result, setResults] = useState(null);
+  const [comic, setComic] = useState([]);
+  const [event, setEvent] = useState([]);
+  const [series, setSeries] = useState([]);
+  const [stories, setStories] = useState([]);
+  const { id } = route.params;
+  console.log(id);
+  console.log(result)
+
+  const searchCharacters = async (id) => {
+    try {
+      const response = await axios.get(
+        `https://gateway.marvel.com/v1/public/characters/${id}`,
+        {
+          params: {
+            ts: 1,
+            apikey: "b0cb24725a85342620041b8414a86e93",
+            hash: "f423de1460a48b164d168a6842846669",
+            limit: 10,
+          },
+        }
+      );
+      if (response) {
+        setResults(response.data?.data?.results);
+      }
+    } catch (err) {
+      console.log("error==>", err);
+    }
+  };
+  const comicCharacters = async (id) => {
+    try {
+      const response = await axios.get(
+        `https://gateway.marvel.com/v1/public/characters/${id}/comics`,
+        {
+          params: {
+            ts: 1,
+            apikey: "b0cb24725a85342620041b8414a86e93",
+            hash: "f423de1460a48b164d168a6842846669",
+            limit: 10,
+          },
+        }
+      );
+      if (response) {
+        setComic(response.data?.data?.results);
+      }
+    } catch (err) {
+      console.log("error==>", err);
+    }
+  };
+  const eventCharacters = async (id) => {
+    try {
+      const response = await axios.get(
+        `https://gateway.marvel.com/v1/public/characters/${id}/events`,
+        {
+          params: {
+            ts: 1,
+            apikey: "b0cb24725a85342620041b8414a86e93",
+            hash: "f423de1460a48b164d168a6842846669",
+            limit: 10,
+          },
+        }
+      );
+      if (response) {
+        setEvent(response.data?.data?.results);
+      }
+    } catch (err) {
+      console.log("error==>", err);
+    }
+  };
+  const seriesCharacters = async (id) => {
+    try {
+      const response = await axios.get(
+        `https://gateway.marvel.com/v1/public/characters/${id}/series`,
+        {
+          params: {
+            ts: 1,
+            apikey: "b0cb24725a85342620041b8414a86e93",
+            hash: "f423de1460a48b164d168a6842846669",
+            limit: 10,
+          },
+        }
+      );
+      if (response) {
+        setSeries(response.data?.data?.results);
+      }
+    } catch (err) {
+      console.log("error==>", err);
+    }
+  };
+  const storiesCharacters = async (id) => {
+    try {
+      const response = await axios.get(
+        `https://gateway.marvel.com/v1/public/characters/${id}/stories`,
+        {
+          params: {
+            ts: 1,
+            apikey: "b0cb24725a85342620041b8414a86e93",
+            hash: "f423de1460a48b164d168a6842846669",
+            limit: 10,
+          },
+        }
+      );
+      if (response) {
+        setStories(response.data?.data?.results);
+      }
+    } catch (err) {
+      console.log("error==>", err);
+    }
+  };
+  useEffect(() => {
+    seriesCharacters(id);
+  }, []);
+  useEffect(() => {
+    eventCharacters(id);
+  }, []);
+  useEffect(() => {
+    searchCharacters(id);
+  }, []);
+  useEffect(() => {
+    comicCharacters(id);
+  }, []);
+  useEffect(() => {
+    storiesCharacters(id);
+  }, []);
+  if (!result) {
+    return null;
+  }
+  
   return (
     <SafeAreaView style={styles.safeViewStyle}>
       <ScrollView>
         <View>
-          <Image source={images.logo} style={styles.imgStyle} />
-          <Text style={styles.textOneStyle}>ultron</Text>
+          <Image source={{uri:result[0].thumbnail.path+'.jpg'}} style={styles.imgStyle} />
+          <Text style={styles.textOneStyle}>{result[0].name}</Text>
           <Text style={styles.textTwoStyle}>descrtiption</Text>
-          <Text style={{ color: "white" }}>
-            ldkljdfkljlkdllkdfjlklkjlkjlkdjgljldjgljldkjglkjlgkjlklnndflkgnlndflgnlkdnfglkldkgnlkdnglkdfnglkdfglkdlgdlgdlkgnldkgnlkdgndlkgndflkgnlkdfgnlkdfgnlkdfngkldnglkdfnglkdfnglkdfnglkdf
-          </Text>
+          <Text style={{ color: "white" }}>{result[0].description}</Text>
         </View>
         <View>
           <Text style={styles.textThreeStyle}>comics</Text>
           <FlatList
             horizontal
-            data={arr}
+            data={comic}
             renderItem={({ item }) => {
               return (
-                <ComicCard imageDetails={item.img} textDetails={item.name} />
+                <ComicCard
+                  imageDetails={
+                    item.thumbnail.path + "." + item.thumbnail.extension
+                  }
+                  textDetails={item.title}
+                />
               );
             }}
           />
@@ -38,10 +169,15 @@ export const CharacterDetails = () => {
           <Text style={styles.textThreeStyle}>Events</Text>
           <FlatList
             horizontal
-            data={arr2}
+            data={event}
             renderItem={({ item }) => {
               return (
-                <ComicCard imageDetails={item.img} textDetails={item.name} />
+                <ComicCard
+                  imageDetails={
+                    item.thumbnail.path + "." + item.thumbnail.extension
+                  }
+                  textDetails={item.title}
+                />
               );
             }}
           />
@@ -50,10 +186,16 @@ export const CharacterDetails = () => {
           <Text style={styles.textThreeStyle}>series</Text>
           <FlatList
             horizontal
-            data={arr3}
+            data={series}
             renderItem={({ item }) => {
+
               return (
-                <ComicCard imageDetails={item.img} textDetails={item.name} />
+                <ComicCard
+                  imageDetails={
+                    item.thumbnail.path + "." + item.thumbnail.extension
+                  }
+                  textDetails={item.title}
+                />
               );
             }}
           />
@@ -62,10 +204,17 @@ export const CharacterDetails = () => {
           <Text style={styles.textThreeStyle}>Stories</Text>
           <FlatList
             horizontal
-            data={arr3}
+            data={stories}
             renderItem={({ item }) => {
+              console.log(item.thumbnail)
+
               return (
-                <ComicCard imageDetails={item.img} textDetails={item.name} />
+                
+                <ComicCard 
+                imageDetails={item.thumbnail + "." + item.thumbnail}
+                 
+                  textDetails={item.title}
+                />
               );
             }}
           />
@@ -92,27 +241,3 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
 });
-const arr = [
-  { img: images.logo, name: "dfgdfgdg" },
-  { img: images.logo, name: "dfgdfgdg" },
-  { img: images.logo, name: "dfgdfgdg" },
-  { img: images.logo, name: "dfgdfgdg" },
-];
-const arr2 = [
-  { img: images.logo, name: "dfgdfgdg" },
-  { img: images.logo, name: "dfgdfgdg" },
-  { img: images.logo, name: "dfgdfgdg" },
-  { img: images.logo, name: "dfgdfgdg" },
-];
-const arr3 = [
-  { img: images.logo, name: "dfgdfgdg" },
-  { img: images.logo, name: "dfgdfgdg" },
-  { img: images.logo, name: "dfgdfgdg" },
-  { img: images.logo, name: "dfgdfgdg" },
-];
-const arr4 = [
-  { img: images.logo, name: "dfgdfgdg" },
-  { img: images.logo, name: "dfgdfgdg" },
-  { img: images.logo, name: "dfgdfgdg" },
-  { img: images.logo, name: "dfgdfgdg" },
-];
