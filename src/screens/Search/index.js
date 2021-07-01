@@ -10,33 +10,10 @@ import {
 } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import { SearchCard } from "../../components";
-import axios from "axios";
+import { useSearch } from "../../hooks/useResult";
 export const Search = () => {
   const [char, setchar] = useState("");
-  const [results, setResults] = useState([]);
-  const searchCharacters = async () => {
-    try {
-      const response = await axios.get(
-        "https://gateway.marvel.com/v1/public/characters",
-        {
-          params: {
-            ts: 1,
-            apikey: "b0cb24725a85342620041b8414a86e93",
-            hash: "f423de1460a48b164d168a6842846669",
-            limit: 10,
-            nameStartsWith: char,
-          },
-        }
-      );
-      // console.log(response.data?.data?.results);
-      if (response) {
-        setResults(response.data?.data?.results);
-      }
-    } catch (err) {
-      console.log("error==>", err);
-    }
-  };
-
+  const [results, searchCharacters] = useSearch();
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.mainView}>
@@ -48,7 +25,9 @@ export const Search = () => {
             placeholderTextColor="white"
             value={char}
             onChangeText={(charac) => setchar(charac)}
-            onEndEditing={searchCharacters}
+            onEndEditing={() => {
+              searchCharacters(char);
+            }}
           ></TextInput>
         </View>
         <TouchableOpacity>
@@ -60,7 +39,8 @@ export const Search = () => {
         data={results}
         renderItem={({ item }) => {
           return (
-            <SearchCard item={item}
+            <SearchCard
+              item={item}
               img={item.thumbnail.path + "." + item.thumbnail.extension}
               name={item.name}
               search={char}
@@ -68,7 +48,6 @@ export const Search = () => {
           );
         }}
       />
-      
     </SafeAreaView>
   );
 };

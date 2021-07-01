@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import {
   View,
   FlatList,
@@ -10,35 +10,10 @@ import {
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { images } from "../../assets";
 import { CharacterCard } from "../../components";
-import axios from "axios";
+import { useCharcter } from "../../hooks/useResult";
 
 export const Home = ({ navigation }) => {
-  const [results, setResults] = useState([]);
-  const searchCharacters = async () => {
-    try {
-      const response = await axios.get(
-        "https://gateway.marvel.com/v1/public/characters",
-        {
-          params: {
-            ts: 1,
-            apikey: "b0cb24725a85342620041b8414a86e93",
-            hash: "f423de1460a48b164d168a6842846669",
-            limit: 10,
-          },
-        }
-      );
-      // console.log(response.data?.data?.results);
-      if (response) {
-        setResults(response.data?.data?.results);
-      }
-    } catch (err) {
-      console.log("error==>", err);
-    }
-  };
-  useEffect(() => {
-    searchCharacters();
-  }, []);
-  // console.log(results)
+  const [results] = useCharcter();
   return (
     <SafeAreaView style={styles.saveView}>
       <View style={styles.viewStyle}>
@@ -56,7 +31,7 @@ export const Home = ({ navigation }) => {
         renderItem={({ item }) => {
           return (
             <CharacterCard
-               item={item}
+              item={item}
               title={item.name}
               source={item.thumbnail.path + "." + item.thumbnail.extension}
             />
@@ -81,9 +56,3 @@ const styles = StyleSheet.create({
   },
   imgStyle: { width: 170, height: 40, marginLeft: 60 },
 });
-const arr = [
-  { title: "thor", source: images.logo },
-  { title: "thor", source: images.logo },
-  { title: "thor", source: images.logo },
-  { title: "thor", source: images.logo },
-];
