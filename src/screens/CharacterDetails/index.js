@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import {
   View,
   SafeAreaView,
@@ -9,44 +9,20 @@ import {
   StyleSheet,
 } from "react-native";
 import { ComicCard } from "../../components";
-import axios from "axios";
 import {
   useCharcterId,
   useComics,
   useEvent,
   useSeries,
+  useStories,
 } from "../../hooks/useResult";
 export const CharacterDetails = ({ route }) => {
-  const [stories, setStories] = useState([]);
   const { id } = route.params;
   const [result] = useCharcterId(id);
   const [comic] = useComics(id);
   const [event] = useEvent(id);
   const [series] = useSeries(id);
-
-  const storiesCharacters = async (id) => {
-    try {
-      const response = await axios.get(
-        `https://gateway.marvel.com/v1/public/characters/${id}/stories`,
-        {
-          params: {
-            ts: 1,
-            apikey: "b0cb24725a85342620041b8414a86e93",
-            hash: "f423de1460a48b164d168a6842846669",
-            limit: 10,
-          },
-        }
-      );
-      if (response) {
-        setStories(response.data?.data?.results);
-      }
-    } catch (err) {
-      console.log("error==>", err);
-    }
-  };
-  useEffect(() => {
-    storiesCharacters(id);
-  }, []);
+  const [stories] = useStories(id);
 
   if (!result) {
     return null;

@@ -167,3 +167,31 @@ export const useSeries = (id) => {
   }, []);
   return [series];
 };
+
+export const useStories=(id)=>{
+  const [stories, setStories] = useState([]);
+  const storiesCharacters = async (id) => {
+    try {
+      const response = await axios.get(
+        `https://gateway.marvel.com/v1/public/characters/${id}/stories`,
+        {
+          params: {
+            ts: 1,
+            apikey: "b0cb24725a85342620041b8414a86e93",
+            hash: "f423de1460a48b164d168a6842846669",
+            limit: 10,
+          },
+        }
+      );
+      if (response) {
+        setStories(response.data?.data?.results);
+      }
+    } catch (err) {
+      console.log("error==>", err);
+    }
+  };
+  useEffect(() => {
+    storiesCharacters(id);
+  }, []);
+  return[stories]
+}
