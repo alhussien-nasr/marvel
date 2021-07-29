@@ -1,5 +1,6 @@
 import React from "react";
-import { ScrollView, Image, Text, StyleSheet } from "react-native";
+import { ScrollView, Image, Text, StyleSheet, View } from "react-native";
+import { HeaderBackButton } from "@react-navigation/stack";
 import { Screen, Card } from "../../components";
 import {
   useCharcterId,
@@ -8,7 +9,7 @@ import {
   useSeries,
   useStories,
 } from "../../hooks/useResult";
-export const CharacterDetails = ({ route }) => {
+export const CharacterDetails = ({ route, navigation }) => {
   const { id } = route.params;
   const [result, loadingCharcter] = useCharcterId(id);
   const [comic, loadingComics] = useComics(id);
@@ -18,6 +19,18 @@ export const CharacterDetails = ({ route }) => {
   // const noComicsData = comic?.length == 0;
   return (
     <Screen loading={loadingCharcter}>
+      <HeaderBackButton
+        tintColor="red"
+        onPress={() => navigation.goBack()}
+        labelVisible={false}
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          zIndex: 2,
+        }}
+      />
+
       <ScrollView showsVerticalScrollIndicator={false}>
         <Image
           source={{ uri: result[0]?.thumbnail.path + ".jpg" }}
