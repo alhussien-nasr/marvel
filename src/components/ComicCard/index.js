@@ -1,22 +1,35 @@
 import React from "react";
-import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
-export const ComicCard = ({ imageDetails, textDetails }) => {
+import { Text, TouchableOpacity, StyleSheet, Image } from "react-native";
+export const ComicCard = ({ image, title, onPress }) => {
   return (
     <TouchableOpacity
+      activeOpacity={0.8}
+      onPress={onPress}
       style={styles.container}
     >
-      <Image source={{uri:imageDetails}} style={styles.imgStyle} />
-      <Text numberOfLines={2} style={{ color: "white" ,width:120}}>{textDetails}</Text>
+      <Image
+        source={{ uri: image }}
+        style={styles.imgStyle}
+        resizeMode="cover"
+      />
+      <Text numberOfLines={2} style={styles.textStyle}>
+        {title}
+      </Text>
     </TouchableOpacity>
   );
 };
 const styles = StyleSheet.create({
   container: {
-    borderWidth: 1,
+    width: 120,
     alignItems: "center",
     justifyContent: "center",
-    borderRadius: 8,
-    marginRight: 10,
   },
-  imgStyle:{ height: 170, width: 120 }
+  imgStyle: {
+    height: 170,
+    width: 120,
+  },
+  textStyle: {
+    height: 50,
+    color: "white",
+  },
 });
