@@ -5,71 +5,84 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
-  SafeAreaView,
   FlatList,
 } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
-import { SearchCard } from "../../components";
+import { SearchCard, Screen, Indicator } from "../../components";
 import { useSearch } from "../../hooks/useResult";
-export const Search = () => {
+import { BlurView } from "expo-blur";
+export const Search = ({ navigation }) => {
   const [char, setchar] = useState("");
-  const [results, searchCharacters] = useSearch();
+  const [results, searchCharacters, loading] = useSearch();
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.mainView}>
-        <View style={styles.viewOne}>
-          <FontAwesome name="search" size={24} color="white" />
-          <TextInput
-            style={styles.inputStyle}
-            placeholder="Search for a character..."
-            placeholderTextColor="white"
-            value={char}
-            onChangeText={(charac) => setchar(charac)}
-            onEndEditing={() => {
-              searchCharacters(char);
-            }}
-          ></TextInput>
-        </View>
-        <TouchableOpacity>
-          <Text style={styles.textStyle}>cancel</Text>
-        </TouchableOpacity>
-      </View>
-      <FlatList
-        style={{ flex: 1 }}
-        data={results}
-        renderItem={({ item }) => {
-          return (
-            <SearchCard
-              item={item}
-              img={item.thumbnail.path + "." + item.thumbnail.extension}
-              name={item.name}
-              search={char}
+    <Screen styleScreen={{ backgroundColor: "transparent" }}>
+      <BlurView style={styles.container} intensity={100} tint="dark">
+        <View style={styles.mainView}>
+          <View style={styles.viewOne}>
+            <FontAwesome name="search" size={24} color="white" />
+            <TextInput
+              style={styles.inputStyle}
+              placeholder="Search for a character..."
+              placeholderTextColor="white"
+              value={char}
+              onChangeText={(charac) => setchar(charac)}
+              onSubmitEditing={() => searchCharacters(char)}
+              keyboardAppearance="dark"
+              returnKeyLabel="Search"
+              returnKeyType="search"
+              autoFocus
+              clearButtonMode="while-editing"
             />
-          );
-        }}
-      />
-    </SafeAreaView>
+          </View>
+          <TouchableOpacity onPress={() => navigation.goBack()}>
+            <Text style={styles.textStyle}>Cancel</Text>
+          </TouchableOpacity>
+        </View>
+        {loading ? (
+          <Indicator />
+        ) : (
+          <FlatList
+            data={results}
+            keyExtractor={(item, index) => index.toString()}
+            contentContainerStyle={{ alignItems: "center" }}
+            ItemSeparatorComponent={() => <View style={styles.separator} />}
+            renderItem={({ item }) => {
+              const { id, name, thumbnail } = item;
+              const image = thumbnail.path + "." + thumbnail.extension;
+              return (
+                <SearchCard
+                  {...{ image, name }}
+                  search={char}
+                  onPress={() =>
+                    navigation.navigate("CharacterDetails", { id })
+                  }
+                />
+              );
+            }}
+          />
+        )}
+      </BlurView>
+    </Screen>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
   mainView: {
     flexDirection: "row",
     justifyContent: "space-around",
-    marginBottom: 50,
-  },
-  container: {
-    paddingTop: 30,
-    backgroundColor: "black",
-    flex: 1,
     alignItems: "center",
+    marginBottom: 50,
+    paddingTop: 30,
   },
   viewOne: {
     flexDirection: "row",
     alignItems: "center",
+    justifyContent: "center",
     height: 55,
     width: "70%",
-    justifyContent: "center",
     backgroundColor: "#404040",
     borderRadius: 15,
     paddingLeft: 15,
@@ -79,12 +92,15 @@ const styles = StyleSheet.create({
     shadowColor: "gray",
   },
   inputStyle: {
-    width: "70%",
-    height: 55,
-    borderRadius: 15,
-    color: "white",
     flex: 1,
-    paddingLeft: 15,
+    color: "white",
+    paddingHorizontal: 15,
   },
-  textStyle: { fontSize: 20, color: "#C44A4A", marginTop: 15, marginLeft: 20 },
+  textStyle: {
+    fontSize: 20,
+    color: "#C44A4A",
+  },
+  separator: {
+    height: 10,
+  },
 });
