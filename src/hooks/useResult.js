@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 
 export const useCharcter = () => {
   const [results, setResults] = useState([]);
+  const [loading, setLoading] = useState(true);
   const searchCharacters = async () => {
     try {
       const response = await axios.get(
@@ -18,21 +19,25 @@ export const useCharcter = () => {
       );
       if (response) {
         setResults(response.data?.data?.results);
+        setLoading(false);
       }
     } catch (err) {
       console.log("error==>", err);
+      setLoading(false);
     }
   };
   useEffect(() => {
     searchCharacters();
   }, []);
-  return [results];
+  return { results, loading };
 };
 
 export const useSearch = () => {
   const [results, setResults] = useState([]);
+  const [loading, setLoading] = useState(false);
   const searchCharacters = async (char) => {
     try {
+      setLoading(true);
       const response = await axios.get(
         "https://gateway.marvel.com/v1/public/characters",
         {
@@ -47,16 +52,19 @@ export const useSearch = () => {
       );
       if (response) {
         setResults(response.data?.data?.results);
+        setLoading(false);
       }
     } catch (err) {
       console.log("error==>", err);
+      setLoading(false);
     }
   };
-  return [results, searchCharacters];
+  return [results, searchCharacters, loading];
 };
 
 export const useCharcterId = (id) => {
-  const [result, setResults] = useState(null);
+  const [result, setResults] = useState([]);
+  const [loadingCharcter, setLoading] = useState(true);
   const searchCharacters = async () => {
     try {
       const response = await axios.get(
@@ -72,19 +80,22 @@ export const useCharcterId = (id) => {
       );
       if (response) {
         setResults(response.data?.data?.results);
+        setLoading(false);
       }
     } catch (err) {
       console.log("error==>", err);
+      setLoading(false);
     }
   };
   useEffect(() => {
     searchCharacters(id);
   }, []);
-  return [result, searchCharacters];
+  return [result, loadingCharcter];
 };
 
 export const useComics = (id) => {
   const [comic, setComic] = useState([]);
+  const [loadingComics, setLoading] = useState(true);
   const comicCharacters = async (id) => {
     try {
       const response = await axios.get(
@@ -100,19 +111,22 @@ export const useComics = (id) => {
       );
       if (response) {
         setComic(response.data?.data?.results);
+        setLoading(false);
       }
     } catch (err) {
       console.log("error==>", err);
+      setLoading(false);
     }
   };
   useEffect(() => {
     comicCharacters(id);
   }, []);
-  return [comic];
+  return [comic, loadingComics];
 };
 
 export const useEvent = (id) => {
   const [event, setEvent] = useState([]);
+  const [loadingEvent, setLoading] = useState(true);
   const eventCharacters = async (id) => {
     try {
       const response = await axios.get(
@@ -128,19 +142,22 @@ export const useEvent = (id) => {
       );
       if (response) {
         setEvent(response.data?.data?.results);
+        setLoading(false);
       }
     } catch (err) {
       console.log("error==>", err);
+      setLoading(false);
     }
   };
   useEffect(() => {
     eventCharacters(id);
   }, []);
-  return [event];
+  return [event, loadingEvent];
 };
 
 export const useSeries = (id) => {
   const [series, setSeries] = useState([]);
+  const [loadingSeries, setLoading] = useState(true);
 
   const seriesCharacters = async (id) => {
     try {
@@ -157,19 +174,22 @@ export const useSeries = (id) => {
       );
       if (response) {
         setSeries(response.data?.data?.results);
+        setLoading(false);
       }
     } catch (err) {
       console.log("error==>", err);
+      setLoading(false);
     }
   };
   useEffect(() => {
     seriesCharacters(id);
   }, []);
-  return [series];
+  return [series, loadingSeries];
 };
 
-export const useStories=(id)=>{
+export const useStories = (id) => {
   const [stories, setStories] = useState([]);
+  const [loadingStories, setLoading] = useState(true);
   const storiesCharacters = async (id) => {
     try {
       const response = await axios.get(
@@ -185,13 +205,15 @@ export const useStories=(id)=>{
       );
       if (response) {
         setStories(response.data?.data?.results);
+        setLoading(false);
       }
     } catch (err) {
       console.log("error==>", err);
+      setLoading(false);
     }
   };
   useEffect(() => {
     storiesCharacters(id);
   }, []);
-  return[stories]
-}
+  return [stories, loadingStories];
+};
